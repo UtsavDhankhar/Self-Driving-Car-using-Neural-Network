@@ -1,12 +1,17 @@
 class Control{
 
-    constructor(){
+    constructor(cType){
         this.forward = false;
         this.left = false;
         this.reverse = false;
         this.right = false;
-        
-        this.#addkeyboardListeners();
+       
+        if(cType=="main")
+            this.#addkeyboardListeners();
+
+        if(cType=="dummy"){
+            this.forward=true;
+        }
     }
 
     #addkeyboardListeners(){
@@ -26,7 +31,7 @@ class Control{
                     this.reverse = true;
                     break;
             }
-            console.table(this);
+   
         }
 
         document.onkeyup = (event)=>{
@@ -45,7 +50,6 @@ class Control{
                     this.reverse = false;
                     break;
             }
-            console.table(this);
         }
 
     }

@@ -1,26 +1,31 @@
 class Car{
 
-    constructor(x,y,width,height){
+    constructor(x,y,width,height , cType , maxspeed=1){
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.speed = 0;
-        this.maxspeed = 2;
+        this.maxspeed = maxspeed;
         this.friction = 0.05;
         this.accelaration = .2; 
         this.angle = 0;
         this.flip = 1;
+        this.damage = false;
 
-        this.controls = new Control();
+        this.controls = new Control(cType);
+        this.sensor = new Sensor(this);
 
     }
 
-    update(){
+    update(roadBorders){
+        
         this.#move();
+        this.sensor.update(roadBorders);
     }
 
     #move(){
+        
         
         if(this.controls.forward){
             this.speed -= this.accelaration;
@@ -37,6 +42,7 @@ class Car{
         if(this.speed < -this.maxspeed){
             this.speed = -this.maxspeed;
         }
+
 
         if(Math.abs(this.speed) < this.friction){
             this.speed = 0;
@@ -82,5 +88,9 @@ class Car{
        
         ctx.fill();
         ctx.restore();
+
+        this.sensor.draw(ctx);
+
+    
     }
 }
