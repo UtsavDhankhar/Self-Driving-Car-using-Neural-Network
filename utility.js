@@ -27,3 +27,27 @@ function getintersection(a,b,c,d){
     return null;
 
 }
+
+
+function polyIntersect(poly1 ,poly2){
+
+    for(let i = 0 ; i < poly1.length ; i++){
+
+        for(let j = 0 ; j < poly2.length ; j++){
+
+            const touch = getintersection(
+                poly1[i],
+                poly1[(i+1)%poly1.length],
+                poly2[j],
+                poly2[(j+1)%poly2.length]
+            );
+
+            if(touch){
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+

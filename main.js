@@ -18,22 +18,24 @@ animate();
 function animate(){
 
     
-    car.update(road.borders);
     canvas.height = window.innerHeight;
 
-    // for(let i = 0 ; i < traffic.length ; i++){
-    //     traffic[i].update();
-    // }
+    for(let i = 0 ; i < traffic.length ; i++){
+        traffic[i].update(road.borders , []);
+    }
+    
+    car.update(road.borders,traffic);
 
     ctx.save();
     ctx.translate(0,-car.y + canvas.height*.7);
 
     road.draw(ctx);
-    car.draw(ctx);
+    
 
-    // for(let i = 0 ; i < traffic.length ; i++){
-    //     traffic[i].draw(ctx);
-    // }
+    for(let i = 0 ; i < traffic.length ; i++){
+        traffic[i].draw(ctx);
+    }
+    car.draw(ctx);
 
     ctx.restore();
     requestAnimationFrame(animate);

@@ -29,7 +29,7 @@ class Road{
     draw(ctx){
 
         ctx.lineWidth = 5;
-        ctx.strokeStyle ="White";
+        ctx.strokeStyle ="white";
 
         ctx.setLineDash([20,20]);
 
