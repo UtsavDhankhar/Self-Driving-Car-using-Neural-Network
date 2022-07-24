@@ -6,10 +6,10 @@ class Control{
         this.reverse = false;
         this.right = false;
        
-        if(cType=="main")
+        if(cType=="Ai")
             this.#addkeyboardListeners();
 
-        if(cType=="dummy"){
+        if(cType=="Bot"){
             this.forward=true;
         }
     }

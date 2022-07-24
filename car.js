@@ -15,9 +15,13 @@ class Car{
         this.cType = cType;
 
         this.controls = new Control(cType);
+        this.usebrain = cType=="Ai";
 
-        if(this.cType=="main")
+        if(this.cType!="Bot")
             this.sensor = new Sensor(this);
+            const rayCount = 5
+            this.min_speed = 1.5
+            this.brain = new Network([rayCount , 6 ,4]);
 
     }
 
@@ -29,8 +33,19 @@ class Car{
             this.damage = this.#assessDamage(roadBorders , traffic);
         }
 
-        if(this.cType=="main")
+        if(this.cType!="Bot"){
             this.sensor.update(roadBorders , traffic);
+            const offsets = this.sensor.readings.map(s=>s==null? 0 : 1 - s.offset);
+
+            const outputs = Network.feedforward(offsets , this.brain);
+
+            this.controls.forward = outputs[0];
+            this.controls.left = outputs[1];
+            this.controls.right = outputs[2];
+            // this.controls.reverse = outputs[3];
+
+        }
+
     }
 
     #move(){
@@ -75,6 +90,12 @@ class Car{
             if(this.controls.right){
                 this.angle -=.02*this.flip;
             } 
+        }
+
+        if(this.cType!="Bot"){
+            if(this.speed > -this.min_speed){
+                this.speed = -this.min_speed;
+            }
         }
 
         this.x += Math.sin(this.angle)*this.speed;
@@ -129,28 +150,18 @@ class Car{
         return false;
     }
 
-    draw(ctx){
+    draw(ctx , isbestcar){
 
-        // ctx.save();
-        // ctx.translate(this.x , this.y);
-        // ctx.rotate(-this.angle);
-
-        // ctx.beginPath();
-        // ctx.rect(
-        //     -this.width/2,
-        //     -this.height/2,
-        //     this.width,
-        //     this.height,
-        // )
-       
-        // ctx.fill();
-        // ctx.restore();
 
         if(this.damage){
             ctx.fillStyle = "gray";
         }
         else{
-            ctx.fillStyle = "black";
+            ctx.fillStyle = "blue";
+        }
+
+        if(this.cType == 'Bot'){
+            ctx.fillStyle = "red";
         }
 
         ctx.beginPath();
@@ -165,7 +176,7 @@ class Car{
 
         ctx.fill();
 
-        if(this.cType=="main"){
+        if(isbestcar){
             this.sensor.draw(ctx);
         }
     
