@@ -1,3 +1,7 @@
+
+var today= new Date();
+console.log(today);
+
 const canvas = document.getElementById("myCanvas")
 canvas.height = window.innerHeight;
 canvas.width = 200;
@@ -47,18 +51,40 @@ function discard(){
 
 if(localStorage.getItem("brain")){
 
+    let random = Math.random()/2 + .1;
+    console.log(random);
     for(let i = 0 ; i < cars.length ; i++){
         cars[i].brain = JSON.parse(localStorage.getItem("brain"));
     
 
         if(i!=0){
-            let random = Math.random()/2;
+            
             Network.mutate(cars[i].brain , random);
         }
     }
 }
 
 let pos_best_car = bestcar.y;
+
+function check_movement(){
+
+setTimeout(function(){
+
+    if(pos_best_car== bestcar.y){
+        save();
+        location.reload();
+    }
+    else{
+        pos_best_car = bestcar.y;
+        today = new Date();
+        console.log(today );
+        check_movement();
+    }
+},5000)
+
+}
+
+check_movement();
 
 
 animate();
@@ -72,11 +98,15 @@ function animate(){
     );
 
     for(let i = 0 ; i < traffic.length; i++){
+        // console.log(traffic[i].y - bestcar.y)
 
-        if(traffic[i].y - bestcar.y > 1000 ){
-            let lane = Math.random()*2;
-            traffic[i].y = bestcar - 1000;
+        if(traffic[i].y - bestcar.y > 500 ){
+            let lane = Math.random()*3;
+            lane = Math.floor(lane) ;
+            traffic[i].y = bestcar.y - 1000;
             traffic[i].x = road.getLaneCenter(lane);
+            console.log(traffic[i].x +"  " + traffic[i].y)
+            console.log("this one  " + i);
         }
     }
 
@@ -103,18 +133,6 @@ function animate(){
     ctx.globalAlpha = 0.2;
     for(let i = 0 ; i < num ; i++){
         cars[i].draw(ctx);
-    }
-
-    if(pos_best_car == bestcar.y){
-        setTimeout(function(){
-            if(pos_best_car == bestcar.y){
-                save();
-                location.reload();
-            }
-        },10000)
-    }
-    else{
-        pos_best_car = bestcar.y;
     }
 
     ctx.globalAlpha = 1;

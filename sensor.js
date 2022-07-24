@@ -2,9 +2,9 @@
 class Sensor{
     constructor(car){
         this.car = car;
-        this.rayCount = 5;
+        this.rayCount = 10;
         this.rayLength = 100;
-        this.rayspread = Math.PI/4;
+        this.rayspread = Math.PI/2;
 
         this.rays = [];
         this.readings = [];
@@ -112,7 +112,6 @@ class Sensor{
 
             if(this.readings[i]){
                 end = this.readings[i];
-                console.log(true)
             }
 
             ctx.beginPath();

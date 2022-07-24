@@ -19,9 +19,9 @@ class Car{
 
         if(this.cType!="Bot")
             this.sensor = new Sensor(this);
-            const rayCount = 5
+            const rayCount = 10
             this.min_speed = 1.5
-            this.brain = new Network([rayCount , 6 ,4]);
+            this.brain = new Network([rayCount , 10,10 ,4]);
 
     }
 
@@ -42,7 +42,7 @@ class Car{
             this.controls.forward = outputs[0];
             this.controls.left = outputs[1];
             this.controls.right = outputs[2];
-            // this.controls.reverse = outputs[3];
+            this.controls.reverse = outputs[3];
 
         }
 
